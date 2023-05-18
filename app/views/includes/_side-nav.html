@@ -145,7 +145,6 @@
   }
 ] %}
 
-
 {% set list_patterns = [
  {
     title: "Patterns",
@@ -212,6 +211,31 @@
   }
 ] %}
 
+{% set strategy = [
+   {
+    title: "Accessibility",
+    url: "/strategy/accessibility"
+  },
+   {
+    title: "Design maturity",
+    url: "/strategy/design-maturity"
+  },{
+    title: "Measure good design",
+    url: "/strategy/measure-good-design"
+  },{
+    title: "Patterns and components",
+    url: "/strategy/patterns-components"
+  },
+ {
+    title: "People and objectives",
+    url: "/strategy/people-objectives"
+  },
+   
+   {
+    title: "Standards and assurance",
+    url: "/strategy/standards-assurance"
+  }
+] %}
 
 <nav class="dfe-vertical-nav">
 
@@ -315,12 +339,11 @@
 
   {% endif %}
 
-
   {%- if parentSection == "Components" and isChildSection == "true"%}
 
-  <a href="/design-system/" class="govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-9">Design system</a>
+    <a href="/design-system/" class="govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-9">Design system</a>
 
- <h2 class="dfe-vertical-nav--section-header">Components</h2>
+    <h2 class="dfe-vertical-nav--section-header">Components</h2>
     <ul class="dfe-vertical-nav__section">
       {% for item in list_components %}
         <li class="dfe-vertical-nav__section-item {% if item.title === pageName  or setSelectedSideNav === item.title %}dfe-vertical-nav__section-item--current{% endif %}">
@@ -330,12 +353,11 @@
     </ul>
   {% endif %}
 
+  {%- if parentSection == "Styles" and isChildSection == "true"%}
 
-   {%- if parentSection == "Styles" and isChildSection == "true"%}
+    <a href="/design-system/" class="govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-9">Design system</a>
 
-  <a href="/design-system/" class="govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-9">Design system</a>
-
- <h2 class="dfe-vertical-nav--section-header">Styles</h2>
+    <h2 class="dfe-vertical-nav--section-header">Styles</h2>
     <ul class="dfe-vertical-nav__section">
       {% for item in list_styles %}
         <li class="dfe-vertical-nav__section-item {% if item.title === pageName  or setSelectedSideNav === item.title %}dfe-vertical-nav__section-item--current{% endif %}">
@@ -345,12 +367,11 @@
     </ul>
   {% endif %}
 
+  {%- if parentSection == "Patterns" and isChildSection == "true"%}
 
-   {%- if parentSection == "Patterns" and isChildSection == "true"%}
+    <a href="/design-system/" class="govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-9">Design system</a>
 
-  <a href="/design-system/" class="govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-9">Design system</a>
-
- <h2 class="dfe-vertical-nav--section-header">Patterns</h2>
+    <h2 class="dfe-vertical-nav--section-header">Patterns</h2>
     <ul class="dfe-vertical-nav__section">
       {% for item in list_patterns %}
         <li class="dfe-vertical-nav__section-item {% if item.title === pageName  or setSelectedSideNav === item.title %}dfe-vertical-nav__section-item--current{% endif %}">
@@ -360,9 +381,7 @@
     </ul>
   {% endif %}
 
-
-
-    {%- if selectedNav == "Accessibility" %}
+  {%- if selectedNav == "Accessibility" %}
     <ul class="dfe-vertical-nav__section">
       {% for item in accessibility %}
         <li class="dfe-vertical-nav__section-item {% if item.title === pageName  or setSelectedSideNav === item.title %}dfe-vertical-nav__section-item--current{% endif %}">
@@ -370,7 +389,7 @@
         </li>
       {% endfor %}
     </ul>
-     <h2 class="dfe-vertical-nav--section-header">Understanding WCAG</h2>
+    <h2 class="dfe-vertical-nav--section-header">Understanding WCAG</h2>
     <ul class="dfe-vertical-nav__section">
       {% for item in accessibility_wcag %}
         <li class="dfe-vertical-nav__section-item {% if item.title === pageName  or setSelectedSideNav === item.title %}dfe-vertical-nav__section-item--current{% endif %}">
@@ -387,6 +406,16 @@
       {% endfor %}
     </ul>
 
+  {% endif %}
+
+  {%- if selectedNav == "Strategy" %}
+    <ul class="dfe-vertical-nav__section">
+      {% for item in strategy %}
+        <li class="dfe-vertical-nav__section-item {% if item.title === pageName  or setSelectedSideNav === item.title %}dfe-vertical-nav__section-item--current{% endif %}">
+          <a class="dfe-vertical-nav__link" href="{{ item.url }}">{{ item.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
   {% endif %}
 
 </nav>

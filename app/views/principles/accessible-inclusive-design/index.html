@@ -1,0 +1,122 @@
+{% extends "layouts/project-layout.html" %}
+
+{% set pageSubName = "" %}
+{% set pageName = "We fight for accessibility and inclusivity" %}
+{% set pageDescription = "" %}
+{% set selectedNav = "Our work" %}
+{% set setSelectedSideNav = "" %}
+{% set lastUpdated = ""%}
+{% set backlog_issue_id = "" %}
+{% set hideDescription = "true" %}
+
+{% set projectsHome = "false" %}
+
+{% block breadcrumb %}
+  <a href="/principles" class="govuk-back-link">Back to our values and principles</a>
+{% endblock %}
+
+{% block content %}
+
+  <section>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-third">
+        <h2  class="govuk-heading-s">In the UK:</h2>
+      </div>
+    </div>
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-third">
+        <p class="govuk-heading-l">There are 16 million disabled people, <span class="keep-words-together">that’s 1 in 4 people</span></p>
+
+        <p class="govuk-heading-l">23% of working age adults are disabled</p>
+
+        <p class="govuk-heading-l">40% of households have at least 1 disabled person</p>
+        <strong class="govuk-tag govuk-tag--grey">Source: Scope</strong>
+
+      </div>
+      <div class="govuk-grid-column-two-thirds">
+
+        <figure class="dfe-a-image dfe-a-image--cover govuk-!-margin-bottom-5 ">
+          <picture class="dfe-a-image__picture">
+
+            <img src="/assets/images/inclusive_characters.jpg" alt="">
+          </picture>
+        </figure>
+
+        {% markdown %}
+
+          ## What this means
+
+          Designers consider accessibility and inclusive design to ensure that everyone can access and use products, services, and environments, regardless of their abilities or disabilities. They do this by thinking about how people with different needs, such as visual or hearing impairments, physical disabilities, or learning difficulties, might interact with their designs.
+
+<div class="govuk-inset-text">
+          <a href="https://how-many.herokuapp.com/" target="_blank">Find out how many of your users might have a disability</a>
+        </div>
+
+
+To achieve this, designers take a user-centered approach, which involves involving people with disabilities in the design process and testing their designs with a diverse range of users. They also follow guidelines and standards, such as the Web Content Accessibility Guidelines (WCAG) or the Disability Discrimination Act (DDA), to ensure that their designs meet the needs of all users.
+
+
+
+Designers also consider factors such as color contrast, font size, and readability to ensure that their designs are easy to read and understand. They may also use assistive technologies, such as screen readers, to test their designs and ensure that they are compatible with these tools.
+
+  <div class="dfe-expander-group">
+          <details class="dfe-details dfe-expander">
+            <summary class="dfe-details__summary">
+              <span class="dfe-details__summary-text">
+        Conducting user research
+      </span>
+
+            </summary>
+            <div class="dfe-details__text">
+              <p>Designers may involve people with disabilities in their research to gain insights into their needs, preferences, and challenges.</p>
+              <p>This helps designers to understand the user's perspective and design products, services, and environments that are accessible and inclusive.</p>
+              
+- Work with user researchers to understand user needs and get involved in research activity
+- run design crits, peer reviews, and 2i content and designs with people outside of your team
+              
+            </div>
+          </details>
+        </div>
+
+
+
+
+2. Following guidelines and standards: Designers follow guidelines and standards, such as the Web Content Accessibility Guidelines (WCAG) or the Disability Discrimination Act (DDA), to ensure that their designs meet the needs of all users. These guidelines provide specific requirements and recommendations for designing accessible and inclusive products, services, and environments.
+
+- Understand WCAG and how to test against different criteria
+- Run tests on your designs in Figma and the browser to idenfity problems early on
+- Complete the accessibility training modules
+- You must have an external accessibility audit before going to public beta
+
+3. Considering the user experience: Designers consider the user's experience when interacting with their designs. They think about how people with different abilities, such as visual or hearing impairments, physical disabilities, or cognitive limitations, might interact with their designs. This helps them to identify barriers and make adjustments to ensure that everyone can access and use their designs.
+
+- learn about your users and the environment and situations they use your services, don't design for one scenario
+- Limit your own cognitive biases by co-designing or collaborating and de-risking your design with users and other designers
+
+4. Using assistive technologies: Designers may use assistive technologies, such as screen readers or alternative input devices, to test their designs and ensure that they are compatible with these tools. They may also consider how their designs can work with emerging technologies, such as voice assistants or smart home devices, to ensure that they are accessible and inclusive to a wide range of users.
+
+- If youre near Sheffield, visit the accessibility lab
+- Learn to use the in-built assistive technology on your devices (Windows, Mac, Chromebook, iOS, and Android)
+- run through your designs at 200% and 400% zoom and also just using a keyboard
+
+## This doesn't stop at what we design
+
+Presentations, meetings, interviews, and how we interact with each other also need to be considered. 
+
+## Read more
+
+- Microsoft Inclusive Design
+- Apple Design
+- GOV.UK Accessibility
+
+
+
+          {% endmarkdown %}
+
+      </div>
+    </div>
+
+  </section>
+
+{% endblock %}

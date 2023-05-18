@@ -1,0 +1,128 @@
+{% extends "layouts/project-layout.html" %}
+{% set pageName = "People and objectives" %}
+{% set pageDescription = "" %}
+{% set selectedNav = "Strategy" %}
+{% set setSelectedSideNav = "" %}
+{% set lastUpdated = ""%}
+{% set backlog_issue_id = "" %}
+{% set projectsHome = "true" %}
+
+{% block beforeContent %}{% endblock %}
+
+{% block breadcrumb %}
+  <a href="/strategy" class="govuk-back-link">Back to our design strategy</a>
+{% endblock %}
+
+{% block content %}
+  <section class="govuk-!-margin-bottom-9">
+    <div class="govuk-grid-row">
+
+      <div class="govuk-grid-column-one-quarter">
+        {% include "includes/_side-nav.html"%}
+      </div>
+
+      <div class="govuk-grid-column-three-quarters">
+
+        <h2 class="govuk-heading-l">Our goal</h2>
+
+        <p>From joining DfE, getting involved in our communities of practice, to growing skills and knowledge, we want to create the best environment for designers, anywhere in government.</p>
+
+        <p>The working group is made up of people from across content, interaction, and service design.</p>
+
+        <h2 class="govuk-heading-l">Our initiatives</h2>
+
+        <div class="dfe-expander-group">
+          <details class="dfe-details dfe-expander">
+            <summary class="dfe-details__summary">
+              <span class="dfe-details__summary-text">
+        Improving the onboarding experience
+      </span>
+              <span class="dfe-details__summary-text-status">
+                <strong class="govuk-tag govuk-tag--green">In progress</strong>
+              </span>
+            </summary>
+            <div class="dfe-details__text">
+              <p>We have:</p>
+              <ul>
+                <li>spoken to recent new-starters about their experience</li>
+                <li>mapped out the onboarding journey</li>
+                <li>audited all the resources that people are sent when they join</li>
+                <li>started to look at what a good onboarding journey looks like</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="dfe-details dfe-expander">
+            <summary class="dfe-details__summary">
+              <span class="dfe-details__summary-text">
+       Create a set of values and principles by which we work
+      </span>
+              <span class="dfe-details__summary-text-status">
+                <strong class="govuk-tag govuk-tag--red">Not started</strong>
+              </span>
+            </summary>
+            <div class="dfe-details__text">
+              <p>Establish a set of values and principles which outline how we do design in DfE.</p>
+              <p>Bringing together the design professions and setting expectations for how we do design and how we work together.</p>
+
+            </div>
+          </details>
+
+             <details class="dfe-details dfe-expander">
+            <summary class="dfe-details__summary">
+              <span class="dfe-details__summary-text">Develop career pathways
+      </span>
+              <span class="dfe-details__summary-text-status">
+                <strong class="govuk-tag govuk-tag--red">Not started</strong>
+              </span>
+            </summary>
+            <div class="dfe-details__text">
+              <p>Understand the skills and capabilities needed to move into, or between, design professions.</p>
+
+            </div>
+          </details>
+
+                <details class="dfe-details dfe-expander">
+            <summary class="dfe-details__summary">
+              <span class="dfe-details__summary-text">How we continually develop skills and capability 
+      </span>
+              <span class="dfe-details__summary-text-status">
+                <strong class="govuk-tag govuk-tag--red">Not started</strong>
+              </span>
+            </summary>
+            <div class="dfe-details__text">
+              <p>Training opportunities, skill sharing and developing our people.</p>
+              <p>Keeping on top of changing design methods, developing standards, and design maturity.</p>
+
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Get all accordion buttons
+      const accordionButtons = document.querySelectorAll('.accordion-button');
+
+      // Add click event listener to each button
+      accordionButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          // Toggle aria-expanded attribute
+          const isExpanded = button.getAttribute('aria-expanded') === 'true';
+          button.setAttribute('aria-expanded', !isExpanded);
+
+          // Toggle aria-hidden attribute on accordion-content
+          const accordionContent = button.nextElementSibling;
+          accordionContent.setAttribute('aria-hidden', isExpanded);
+
+          // Toggle max-height style on accordion-content
+          if (isExpanded) {
+            accordionContent.style.maxHeight = null;
+          } else {
+            accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px';
+          }
+        });
+      });
+    </script>
+  {% endblock %}

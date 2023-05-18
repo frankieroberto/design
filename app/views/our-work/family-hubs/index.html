@@ -1,0 +1,118 @@
+{% extends "layouts/project-layout.html" %}
+
+{% set pageSubName = "Family Hubs" %}
+{% set pageName = "Growing up well digital project" %}
+{% set pageDescription = "Read about some of the work we're doing in the Department for Education from the teams delivering the work." %}
+{% set selectedNav = "Our work" %}
+{% set setSelectedSideNav = "" %}
+{% set lastUpdated = ""%}
+{% set backlog_issue_id = "" %}
+{% set hideDescription = "true" %}
+
+{% set projectsHome = "false" %}
+
+{% block breadcrumb %}<a href="/our-work" class="govuk-back-link">Back to our work</a>{% endblock %}
+
+{% block content %}
+
+ <section>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-third">
+        <h2  class="govuk-heading-s">Overview</h2>
+      </div>
+    </div>
+
+
+     <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-third">
+          <p class="govuk-heading-l">The project works across education, health, and social care to improve outcomes for vulnerable and disadvantaged children, young people, and families. </p>
+          <strong class="govuk-tag govuk-tag--grey">Familes and Vulnerable Children</strong>
+        </div>
+        <div class="govuk-grid-column-two-thirds">
+
+          <figure class="dfe-a-image dfe-a-image--cover govuk-!-margin-bottom-5">
+              <picture class="dfe-a-image__picture">
+               
+                <img src="/assets/images/family-hubs.jpeg" alt="">
+              </picture>
+            </figure>
+
+          
+      
+
+          {% markdown %}
+
+Our Growing Up Well (FH-GUW) project is funded by HM Treasury through the Shared Outcomes Fund until March 2025.
+
+Through the FH-GUW project we have developed important digital products that will improve the experience, access and connectivity of professionals and families using family hubs.
+
+## Partnership working
+
+We are delivering the project through an iterative, agile process. This involves working closely with a small number of Local Authorities (LAs) across several stages to develop, test, embed and iterate these digital products.
+
+We are working with:
+
+- Bristol
+- Lancashire
+- Suffolk
+- Redbridge
+- Salford
+- Tower Hamlets
+
+During our discovery, we identified user needs and pain points (discovery), to develop and test ideas in our alpha. And we are now in the private beta test and build stage. We are piloting digital products within our local authority partner areas.
+
+## Gaining wider input
+
+Our partnership working is supplemented by our local authority co-design group, which is made up of a larger group of LA representatives covering various roles and levels of seniority. 
+
+The group supports our digital products by bringing together the perspectives and experiences of LAs across England, providing regular input to our roadmap, designs and development work. 
+
+The group have met regularly for over a year and have participated in a wide range of workshops that help to shape our products, for example in identifying new features, project risks, shaping project communications. 
+
+The LA members bring their own expertise and share family hub progress in their local areas.
+
+For the private betas, we are just testing the ability to search and find support services from a directory. We are also looking into how we can build in national level advice and guidance for families and national support services.
+
+## Services in test stage
+
+### Find support for your family
+
+Helps families find their local family hubs and support services available to them within their local family hub network. This service will eventually enable families to find and access services provided by their local authority; voluntary, community and faith organisations; and other state and non-state actors. It provides non-stigmatising access to preventative support and will reduce families' needs from escalating to statutory support.
+
+### Connect families to support
+
+Helps professionals find and connect families to support services available to them within their local family hub network. This service will eventually enable professionals to navigate local services and make a request for support for families. It will also allow professionals to share information about families with service providers more efficiently so that they can save time, make better informed decisions, and help the families they work with to receive the right support at the right time.
+
+### Manage family support services and accounts
+
+Helps LAs and VCFS organisations (and other state and non-state service providers) manage the users and services on Find and Connect.
+
+We are aware that the FH-GUW products can only be as good as the data which underpins and powers them. A challenge faced by many.
+
+## Reading more about these services
+
+You can [read our design histories](https://design-histories.education.gov.uk/team/children-and-families) which is where we share progress and changes to the services over time.
+
+## Data and sustainability
+
+We have used a spreadsheet to bulk upload the services listed in the private beta services we are testing with our partner LAs. This is not sustainable.
+
+A barrier to adopting any product, locally or nationally, is data standards. That is why we, alongside others, are investigating the use of a single data standard, such as the [Open Referral UK](https://openreferraluk.org/about-standard).
+
+The benefits would include making it easier for LAs to store and share data with us and others. Allowing for integration with existing local Family Information Services (FIS), local internal systems, borough or partnership offers etc, alongside regional and national directories.
+
+Get involved – email.
+
+Data sustainability survey for LAs.
+
+Related content: [https://familyhubsnetwork.com/developing-digital-tools/](https://familyhubsnetwork.com/developing-digital-tools/)
+          {% endmarkdown %}
+
+
+        </div>
+      </div>
+
+  </section>
+
+{% endblock %}
+

@@ -1,0 +1,71 @@
+{% extends "layouts/project-layout.html" %}
+{% set pageName = "Strategy" %}
+{% set pageDescription = "" %}
+{% set selectedNav = "Strategy" %}
+{% set setSelectedSideNav = "" %}
+{% set lastUpdated = ""%}
+{% set
+backlog_issue_id = "" %}
+{% set projectsHome = "true" %}
+
+{% set strategy = [
+   {
+    title: "Accessibility",
+    url: "/strategy/accessibility",
+    summary: "How we design accessible and inclusive services"
+  },
+   {
+    title: "Design maturity",
+    url: "/strategy/design-maturity",
+    summary: "Understanding and growing the maturity of design in DfE"
+  },{
+    title: "Measure good design",
+    url: "/strategy/measure-good-design",
+    summary: "Our measures of what good looks like in design"
+  },{
+    title: "Patterns and components",
+    url: "/strategy/patterns-components",
+    summary: "Developing our own patterns and components for consistent design"
+  },
+ {
+    title: "People and objectives",
+    url: "/strategy/people-objectives",
+    summary: "Growing and developing our people and how we work together"
+  },
+   {
+    title: "Standards and assurance",
+    url: "/strategy/standards-assurance",
+    summary: "The standards by which we work and how we assure our work"
+  }
+] %}
+
+{% block beforeContent %}{% endblock %}
+{% block content %}
+  <section class="govuk-!-margin-bottom-9">
+    <div class="govuk-grid-row">
+
+      <div class="govuk-grid-column-full">
+         <div class="dfe-grid-container dfe-grid-container--thirds">
+             {% for item in strategy %}
+         <div class="dfe-card dfe-card--min-height">
+        <div class="dfe-card-container dfe-card-container--equalise-content">
+              <h2 class="govuk-heading-l">
+                <a class="govuk-link govuk-link--no-visited-state dfe-card-link--header" href="{{ item.url }}">{{ item.title }}</a>
+              </h2>
+              <p class="govuk-body govuk-body-l">{{item.summary}}</p>
+            
+            </div>
+          </div>
+      {% endfor %}
+
+       </div>
+ 
+     
+
+
+      </div>
+    </div>
+  </section>
+
+
+{% endblock %}
