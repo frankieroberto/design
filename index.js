@@ -1,7 +1,7 @@
 const express = require('express')
 const nunjucks = require('nunjucks')
 const https = require('https')
-const axios = require('axios')
+const xaxios = require('axios')
 var dateFilter = require('nunjucks-date-filter')
 var markdown = require('nunjucks-markdown')
 var marked = require('marked')
@@ -12,11 +12,22 @@ const fs = require('fs')
 const path = require('path')
 const cheerio = require('cheerio')
 const config = require('./app/config')
+const { AxePuppeteer } = require('@axe-core/puppeteer');
 const puppeteer = require('puppeteer');
 const glob = require('glob');
 const forceHttps = require('express-force-https');
 const compression = require('compression');
+const request = require('request');
 
+const { JSDOM } = require('jsdom');
+const { axeCore } = require('axe-core');
+const readability = require('text-readability');
+
+var Airtable = require('airtable')
+
+const axios = xaxios.create({
+  maxHeaderSize: 1233192 // Set the maximum header size to a larger value
+});
 
 const helmet = require('helmet');
 
@@ -27,6 +38,9 @@ const pageIndex = new PageIndex(config)
 require('dotenv').config()
 var NotifyClient = require('notifications-node-client').NotifyClient
 
+var base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
+  process.env.AIRTABLE_BASE,
+)
 
 const app = express()
 app.use(compression());
@@ -67,7 +81,7 @@ var nunjuckEnv = nunjucks.configure(
 nunjuckEnv.addFilter('date', dateFilter)
 markdown.register(nunjuckEnv, marked.parse)
 
-nunjuckEnv.addFilter('formatNumber', function(number) {
+nunjuckEnv.addFilter('formatNumber', function (number) {
   return number.toLocaleString();
 });
 
@@ -97,7 +111,7 @@ app.get('/robots.txt', (_, res) => {
 
 app.get('/downloads/:filename', (req, res) => {
   const filename = req.params.filename;
-  const filePath = path.join(__dirname, "/app/assets/downloads/"+filename);
+  const filePath = path.join(__dirname, "/app/assets/downloads/" + filename);
   // Set appropriate headers
   res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
   res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
@@ -154,7 +168,7 @@ app.post('/submit-feedback', (req, res) => {
         service: "Design Manual"
       },
     })
-    .then((response) => {})
+    .then((response) => { })
     .catch((err) => console.log(err))
 
   return res.sendStatus(200)
@@ -219,9 +233,9 @@ app.get('/tools/inclusivity-calculator/:number', (req, res) => {
       try {
         const jsonData = JSON.parse(data);
         const calculatedData = calculateValues(jsonData, number);
-     
 
-        res.render('tools/inclusivity-calculator/index.html', {number,calculatedData})
+
+        res.render('tools/inclusivity-calculator/index.html', { number, calculatedData })
 
       } catch (err) {
         console.error('Error parsing data.json:', err);
@@ -238,16 +252,15 @@ app.post('/tools/inclusivity-calculator', (req, res) => {
   var number = req.body.numberOfUsers;
 
   if (number) {
-   
 
-        res.redirect('/tools/inclusivity-calculator/'+number)
 
-    
+    res.redirect('/tools/inclusivity-calculator/' + number)
+
+
   } else {
     res.redirect('/tools/inclusivity-calculator')
   }
 });
-
 function calculateValues(data, number) {
   const calculatedData = [];
 
@@ -266,6 +279,288 @@ function calculateValues(data, number) {
 
   return calculatedData;
 }
+
+function getCriteria(data) {
+  if (data !== undefined) {
+    const wcagElement = data.find(element => /^wcag\d{3}$/.test(element));
+    if (wcagElement !== undefined) {
+      const wcagNumbers = wcagElement.replace(/\D/g, '');
+      const wcagCriteria = wcagNumbers.split('').join('-');
+      return wcagCriteria;
+    }
+  }
+  return null;
+}
+
+function getLevel(data) {
+  if (data !== undefined) {
+    console.log('Level: ' + data);
+
+    const pattern = /^(wcag2a|wcag2aa|best-practice)+$/;
+
+    const wcagLevel = data.find(element => pattern.test(element));
+    return wcagLevel;
+  } else {
+    return null;
+  }
+}
+
+async function getSites() {
+  return await base('SitesB').select({ view: 'Active' }).all()
+}
+
+
+
+
+app.get('/tools/page-check-list', async (req, res) => {
+  try { var now = new Date();
+    const sites = await getSites();
+    for (const site of sites) {
+      const data = await analyzePage(site.fields.URL);
+      console.log(data);
+      for (const violation of data.axeResults.violations) {
+        for (const node of violation.nodes) {
+          try {
+            await new Promise((resolve, reject) => {
+             
+              base('AllB').create([
+                {
+                  fields: {
+                    URL: data.url,
+                    SitesB: [site.id],
+                    HeadTitle: data.title,
+                    MetaDescription: data.metaDescription,
+                    H1: data.h1,
+                    FKScore: data.fkScore,
+                    FKOutcome: data.fkInterpretation,
+                    ViolationSeverity: violation.impact,
+                    ViolationType: violation.id,
+                    ViolationDescription: violation.description,
+                    ViolationHTML: node.html,
+                    ViolationSummary: node.failureSummary,
+                    WCAGLevel: getLevel(violation.tags),
+                    WCAGCriteria: getCriteria(violation.tags),
+                    CorrectHeadingStructure: data.headingStructureCorrect,
+                    ImagesWithoutAltTags: data.imagesWithoutAlt,
+                    TableStructures: data.incorrectlyStructuredTables,
+                    AccessibilityStatement: data.containsAccessibilityStatement,
+                    RunDateTime: now.toLocaleString("en-US"),
+                    DuplicateH1: data.hasDuplicateH1
+                  },
+                },
+              ], (err, records) => {
+                if (err) {
+                  console.error(err);
+                  reject(err);
+                } else {
+                  records.forEach((record) => {
+                    // Process each record
+                  });
+                  resolve();
+                }
+              });
+            });
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      }
+    }
+
+    return res.render('tools/page-check/result');
+  } catch (error) {
+    console.error(error);
+    return res.render('error', { error });
+  }
+});
+
+
+
+app.post('/tools/page-check', async (req, res) => {
+  try {
+    const url = req.body.website;
+
+    const data = await analyzePage(url);
+
+    data.axeResults.violations.forEach(violation => {
+      violation.nodes.forEach(node => {
+
+        base('All').create(
+          [
+            {
+              fields: {
+                URL: data.url,
+                Title: data.title,
+                MetaDescription: data.metaDescription,
+                FKScore: data.fkScore,
+                FKOutcome: data.fkInterpretation,
+                ViolationSeverity: violation.impact,
+                ViolationType: violation.id,
+                ViolationDescription: violation.description,
+                ViolationHTML: node.html,
+                ViolationSummary: node.failureSummary,
+                WCAGLevel: getLevel(violation.tags),
+                WCAGCriteria: getCriteria(violation.tags)
+              },
+            },
+          ],
+          function (err, records) {
+            if (err) {
+              console.error(err)
+              return
+            }
+            records.forEach(function (record) {
+
+            })
+          },
+        )
+
+      });
+    });
+
+    return res.render('tools/page-check/result', { data });
+  } catch (error) {
+    // Handle any errors that occur during the process
+    console.error(error);
+    res.render('error', { error });
+  }
+});
+
+
+function interpretFkScore(score) {
+  if (score >= 90) {
+    return 'Very easy to read, easily understood by an average 11-year-old student';
+  } else if (score >= 80) {
+    return 'Easy to read';
+  } else if (score >= 70) {
+    return 'Fairly easy to read';
+  } else if (score >= 60) {
+    return 'Easily understood by 13- to 15-year-old students';
+  } else if (score >= 50) {
+    return 'Fairly difficult to read';
+  } else if (score >= 30) {
+    return 'Difficult to read, best understood by college graduates';
+  } else {
+    return 'Very difficult to read, best understood by university graduates';
+  }
+}
+
+
+
+async function analyzePage(url) {
+  const response = await axios.get(url);
+  const $ = cheerio.load(response.data);
+
+  const title = $('title').text();
+  const h1 = $('h1').text();
+  const metaDescription = $('meta[name=description]').attr('content');
+  const headingStructureCorrect = checkHeadingStructure($);
+  const imagesWithoutAlt = checkImgAltAttributes($);
+  const incorrectlyStructuredTables = checkTableStructure($);
+  const containsAccessibilityStatement = checkAccessibilityStatement($);
+  const hasDuplicateH1 = checkDuplicateH1($);
+
+  let pageContent = $('body').text();
+
+  // This is a simplified version and might not reflect the actual Flesch-Kincaid readability score.
+  let fkScore = readability.fleschKincaidGrade(pageContent);
+  const fkInterpretation = interpretFkScore(fkScore);
+
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.setBypassCSP(true);
+
+  await page.goto(url);
+
+  const axeResults = await new AxePuppeteer(page).analyze();
+
+  await page.close();
+  await browser.close();
+
+  return {
+    url,
+    title,
+    h1,
+    metaDescription,
+    fkScore,
+    axeResults,
+    fkInterpretation,
+    headingStructureCorrect,
+    imagesWithoutAlt,
+    incorrectlyStructuredTables,
+    containsAccessibilityStatement,
+    hasDuplicateH1
+  };
+}
+
+function checkHeadingStructure($) {
+  const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+  let previousIndex = 0;
+  let correct = true;
+
+  headings.forEach((tag, i) => {
+    const num = $(tag).length;
+
+    // There should be only one h1 element.
+    if (tag === 'h1' && num !== 1) {
+      correct = false;
+    }
+
+    // Heading elements should descend, in order.
+    if (num > 0 && i < previousIndex) {
+      correct = false;
+    }
+
+    if (num > 0) {
+      previousIndex = i;
+    }
+  });
+
+  return correct;
+}
+
+function checkImgAltAttributes($) {
+  const images = $('img');
+  let imagesWithoutAlt = 0;
+
+  images.each(function() {
+    const alt = $(this).attr('alt');
+    if (typeof alt === 'undefined') {
+      imagesWithoutAlt++;
+    }
+  });
+
+  return imagesWithoutAlt;
+}
+
+function checkDuplicateH1($) {
+  const h1s = $('h1');
+  return h1s.length > 1;
+}
+
+function checkAccessibilityStatement($) {
+  const bodyText = $('body').text();
+  return bodyText.toLowerCase().includes("accessibility statement");
+}
+
+function checkTableStructure($) {
+  const tables = $('table');
+  let incorrectlyStructuredTables = 0;
+
+  tables.each(function() {
+    const thead = $(this).find('thead');
+    const tbody = $(this).find('tbody');
+    const th = $(this).find('th');
+
+    // Checks if a table has <thead>, <tbody>, and <th> elements
+    if (!thead.length || !tbody.length || !th.length) {
+      incorrectlyStructuredTables++;
+    }
+  });
+
+  return incorrectlyStructuredTables;
+}
+
 
 app.get(/\.html?$/i, function (req, res) {
   var path = req.path

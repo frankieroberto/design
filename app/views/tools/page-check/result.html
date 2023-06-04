@@ -1,0 +1,136 @@
+{% extends "layouts/main.html" %}
+
+{% set pageName = "Page check results" %}
+{% set pageDescription = "Page check runs tests against a URL for common problems, readability, and accessibility issues."  %}
+{% set selectedNav = "Tools" %}
+
+
+{% block content %}
+
+<h1 class="govuk-heading-l">{{pageName}}</h1>
+
+<div class="govuk-tabs" data-module="govuk-tabs">
+  <h2 class="govuk-tabs__title">
+    Contents
+  </h2>
+  <ul class="govuk-tabs__list">
+    <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+      <a class="govuk-tabs__tab" href="#summary">
+        Summary
+      </a>
+    </li>
+    <li class="govuk-tabs__list-item">
+      <a class="govuk-tabs__tab" href="#accessibility">
+        Accessibility issues
+      </a>
+    </li>
+   
+  </ul>
+  <div class="govuk-tabs__panel" id="summary">
+   
+  <dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      URL
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{data.url}}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Page title
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{data.title}}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Description
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{data.metaDescription }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      H1
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{data.h1}}
+    </dd>
+  </div>
+
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Page FK Score
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{data.fkScore}} - {{data.fkInterpretation}}
+    </dd>
+  </div>
+</dl>
+
+  </div>
+  <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="accessibility">
+    {% for violation in data.axeResults.violations %}
+
+     <dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      ID
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{violation.id}}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Impact
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{violation.impact}}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Tags
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{violation.tags}}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Description
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{violation.description}}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Help
+    </dt>
+    <dd class="govuk-summary-list__value">
+      <a href="{{violation.helpUrl}}" target="_blank">Guidance</a>
+    </dd>
+  </div>
+ 
+</dl>
+
+
+
+
+    {% endfor %}
+  </div>
+</div>
+
+
+
+{{data | dump}}
+     
+
+
+  {% endblock %}

@@ -1,0 +1,36 @@
+{% extends "layouts/content-with-sidenav.html" %}
+
+{% set pageName = "Pacge check" %}
+{% set pageDescription = "Page check runs tests against a URL for common problems, readability, and accessibility issues."  %}
+{% set selectedNav = "Tools" %}
+
+
+{% block content %}
+
+  <form action="/tools/site-crawl" method="post">
+    <div class="govuk-form-group">
+
+      <label class="govuk-label govuk-label--l" for="website">
+      Enter a website address to check
+    </label>
+
+      <input class="govuk-input govuk-!-width-two-thirds" id="website" name="website" type="text" value="{{website}}">
+    </div>
+
+    <div class="govuk-button-group">
+      <button class="govuk-button" data-module="govuk-button">
+    Run check
+  </button>
+      {% if results !== undefined %}
+        <a class="govuk-link" href="/tools/page-check">Clear results</a>{% endif%}
+      </div>
+
+    </form>
+
+
+
+{{accessibilityIssues | dump}}
+     
+
+
+  {% endblock %}
